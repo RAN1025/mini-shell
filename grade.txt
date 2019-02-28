@@ -1,0 +1,3 @@
+Grade: 95
+Comments:
+Good job! Did not do pipe and redirection. Good format and documentation. There is a issume when run non-excutable files. Also failed in change ECE551PATH.

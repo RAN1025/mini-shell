@@ -1,0 +1,587 @@
+	This is the mini-projct: Command Shell.
+	I provide my class declaration and interface in the header file called myShellclass.h. And the implementation of the class is in the source file myShellclass.cpp. And I realize the functions of my shell in the program called myShell.
+	To test my shell, I also provide three program called: test_hello, test_arguments and test_segmentation. Test_hello would simply print the 'Hello World!'. Test_arguments would prints its name and all the arguments of it. Test_segmentation is a program with segmentation fault.
+	My shell would realize the step1-3. And the test process is shwon below.
+
+(1)	Run ./myShell
+	You will see that it prints a prompt 
+
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because /home/rg241/ece551/mp_miniproject is the current directory.
+
+(2)	Run /bin/ls
+	You will see all files and directories in the current directory shown in my shell with two lines showing the exit status and the prompt
+	
+	commandShell.txt  myShellclass.o  test_arguments      test_segmentation
+	Makefile	  myShell.cpp	  test_arguments.cpp  test_segmentation.cpp
+	myShell		  myShell.o	  test_hello
+	myShellclass.cpp  numerics.txt	  test_hello.cpp
+	myShellclass.h	  README	  TESTING.txt
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+	
+	This is correct because the command /bin/ls is operated, then the program lists all the files and directories. After the program exists, the shell prints the exit status 0 and prints the prompt again to repeat the process.
+
+(3)	Run /bin/mv
+	You will see
+
+	/bin/mv: missing file operand
+	Try '/bin/mv --help' for more information.
+	Program exited with status1
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because the command /bin/mv is operated, however the file operand is missed. After the program exists, the shell prints the exit status 1 and prints the prompt again to repeat the process.
+
+(4)	Run ./test_hello
+	You will see
+
+	Hello World!
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because my shell runs the program ./test_hello, and it prints the correct word.
+
+(5)	Run ./test_segmentation
+	You will see
+
+	killed by signal11
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because my shell runs the program ./test_segmentation, and the segmentation fault occurs. Thus the program was killed by signal 11, which is reported correctly.
+
+(6)	Run ls
+	You will see the same results as run /bin/ls
+	
+	commandShell.txt  myShellclass.o  test_arguments      test_segmentation
+	Makefile	  myShell.cpp	  test_arguments.cpp  test_segmentation.cpp
+	myShell		  myShell.o	  test_hello
+	myShellclass.cpp  numerics.txt	  test_hello.cpp
+	myShellclass.h	  README	  TESTING.txt
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because when user types a command name that does not have a forward slash in it, my shell would search each directory specified in environment variable PATH for the specified program. When the program is found, my shell would execute it.
+
+(7)	Run a
+	You will see 
+
+	Command a not found
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because when user types a command name that does not have a forward slash in it, my shell would search each directory specified in environment variable PATH for the specified program.  In this example,  ‘a’ is not an executable program specified in any PATH directories. Thus, my shell would print the message ‘Command a not found’.
+
+(8)	Run ./test
+	You will see
+	
+	Command ./test not found
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because the path name contains a forward slash in it, then my shell would look in the specified directory. ./test is a relative directory, then my shell would search ‘test’ in the current directory. However, the ‘test’ is not an executable program in the current directory . Thus, my shell would print the message ‘Command ./test not found’.
+
+(9) 	Run ./myShell
+	You will see that it prints a prompt 
+
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because the path name contains a forward slash in it, then my shell would look in the specified directory. The relative directory leads to an executable program in the current directory. Thus, my shell would execute the program ./myShell. The inner shell would perform exactly the same as my shell and can operate all the same commands. If you run exit next, you will see
+
+	Program exited with status1
+	myShell:/home/rg241/ece551/mp_miniproject $ 
+
+	This is correct because the inner shell performs the command ‘exit’ while my shell continues its process.
+
+(10)	Run ../myShell
+	You will see
+
+	Command ../myShell not found
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because the path name contains a forward slash in it, then my shell would look in the specified directory.  The specified directory does not contain the executable program ‘myShell’. Thus, my shell would print the message ‘Command ../myShell not found’.
+
+(11)	 Run ../mp_miniproject/test_hello
+	You will see
+
+	Hello World!
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because the path name contains a forward slash in it, then my shell would look in the specified directory. The specified directory leads to an executable program. Then my shell runs the program and prints the correct word.
+
+(12)	Run /home/rg241/ece551/mp_miniproject/test_hello
+	You will see
+
+	Hello World!
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+	
+	This is correct because the path name contains a forward slash in it, then my shell would look in the specified absolute path directory. The absolute path leads to an executable program. Then my shell runs the program and prints the correct word.
+
+(13)	Run /home
+	You will see
+
+	Command /home not found
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because /home is a directory, not an executable program. Then my shell cannot execute it.
+
+(14)	Run ./test_arguments 1 3 5
+	You will see
+
+	./test_arguments
+	1
+	3
+	5
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $ 
+
+	This is correct because my shell runs the program ./test_argumetns and the program can take arguments separated by white space 1,3 and 5. And the program prints its name and its arguments.
+
+(15) 	Run                 ./test_arguments 1       3                       5
+	You will see the result is the same as previous one.
+
+	./test_arguments
+	1
+	3
+	5
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because there may be an arbitrary amount of whitespace between arguments, while my shell would treat it as a single whitespace.
+
+(16) 	Run echo        1       3     5
+	You will see 
+
+	1 3 5
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because the command echo is operated. And the command echo take three arguments 1, 3 and 5. Then the program prints all the arguments.
+
+(17)	Run ./test_arguments a\ b c\ \ d
+	You will see
+
+	./test_arguments
+	a b
+	c  d
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because any white space which is escaped with a \ would be literally included in the argument and not treated as a separator. The arguments now are ‘a b’ and ‘c  d’ separately.
+
+(18)	Run ./test_arguments a\  b c \ d
+	You will see
+
+	./test_arguments
+	a 
+	b
+	c
+	 d
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+	
+	This is correct because the non-escaped spaces would still separate arguments. The arguments now are ‘a ’, ‘b’, ‘c’ and ‘ d’ separately.
+
+(19)	Run echo \a
+	You will see
+
+	a
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because a single \ would be ignored in my shell.
+
+(20) Run echo \\
+	You will see
+	
+	\
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because ‘\\’ means the back slash itself.
+
+(21)	Run echo \
+	You will see
+
+	
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because a single \ would be ignored in my shell.
+
+(22)	Run echo \\\
+	You wil see
+
+	\
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because the first two ‘\\’ are treated as the back slash itself and the left single one is ignored in my shell.
+
+(23)	Run echo abc\\d\e	
+	You will see
+
+	abc\de
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because the ‘\\’ is treated as the back slash in arguments while a single ‘\’ would be ignored.
+
+(24)	Run      (whitespace or just empty)
+	You will see
+
+	empty command	
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because my shell would treat the command with only arbitrary amount of whitespace as empty and prints the message ‘empty command’.
+
+(25)	Run cd
+	You will see that it prints a prompt 
+
+	myShell:/home/rg241 $
+
+	This is correct because ‘cd’ command with no arguments would change the current directory to the home directory, which is /home/rg241.
+
+(26)	Run cd ece551
+	You will see that it prints a prompt
+
+	myShell:/home/rg241/ece551 $
+
+	This is correct because ‘cd’ command takes one argument, and changes the current directory to that specified directory.
+
+(27) Run cd a
+	You will see
+
+	cd :a : no such file or directory
+	myShell:/home/rg241/ece551 $
+
+	This is correct because ‘cd’ command takes one argument, and checks the directory. The ‘a’ is not a valid directory, then my shell prints the message ‘cd :a : no such file or directory’.
+
+(28) Run cd ~
+	You will see that it prints a prompt 
+
+	myShell:/home/rg241 $
+
+	This is correct because ‘cd ~’ acts the same as ‘cd’ with no arguments. The current directory changes to the home directory.
+
+(29) Run cd /home/rg241/ece551/mp_miniproject
+	You will see that it prints a prompt
+
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because ‘cd’ command takes one argument, and changes the current directory to that specified  directory.
+
+(30) 	Run cd .
+	You will see that it prints a prompt
+
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because ‘cd .’ stays in the current directory.
+
+(31) Run cd ..
+	You will see that it prints a prompt
+
+	myShell:/home/rg241/ece551 $
+
+	This is correct because ‘cd ..’ changes the current directory to the previous directory. 
+
+(32) Run cd a b c
+	You will see
+
+	cd : too many arguments
+	myShell:/home/rg241/ece551 $
+
+	This is correct because ‘cd’ command only takes one argument.
+
+(33)	Run set x 1
+		echo $x
+	You will see
+
+	1
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because the variable ‘x’ is set to ‘1’ in the first command. My shell would remember this value and in the echo command, the variable ‘$x’ is replaced to its value ‘1’ . Thus, 1 is printed. 
+
+(34) Run set x 1
+		echo $x-
+	You will see
+
+	1-
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+	
+	This is correct because the variable ‘x’ is set to ‘1’ in the first command. My shell would remember this value and in the echo command, the variable ‘$x’ is replaced to its value ‘1’, and the command changes to ’echo 1-’. Thus, 1- is printed.
+
+(35)	Run set x- 1
+	You will see
+
+	not valid variable name
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because my shell only treat the combination of letters, underscores and numbers as valid variable name. 
+
+(36) Run set x
+	You wil see
+
+	correct format is: set var value
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because ‘set’ command requires two arguments ‘var’ and ‘value’.
+
+(37)	Run set x 234 abc -
+		echo $x
+	You will see
+
+	234 abc -
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because ‘set’ command would set the variable x to ‘234 abc -‘ (even if it contains space, etc.).
+
+(38) Run set x ls
+		$x
+	You will see all files and directories in the current directory shown in my shell with two lines showing the exit status and the prompt
+	
+	commandShell.txt  myShellclass.o  test_arguments      test_segmentation
+	Makefile	  myShell.cpp	  test_arguments.cpp  test_segmentation.cpp
+	myShell		  myShell.o	  test_hello
+	myShellclass.cpp  numerics.txt	  test_hello.cpp
+	myShellclass.h	  README	  TESTING.txt
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+	
+	This is correct because variable ‘x’ is set to ‘ls’ in the first command. Then, ’$x’ would changes to its value ‘ls’ and ‘ls’ is operated. Thus, the program lists all the files and directories. After the program exists, the shell prints the exit status 0 and prints the prompt again to repeat the process.
+
+(40) Run set x 1
+		set y 2
+		echo $x$y
+	You will see
+
+	12
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because variable ‘x’ is set to ‘1’ and variable ‘y’ is set to ‘2’. Then variable ‘$x’ is replaced to its value ‘1’ and variable ‘$y’ is replaced to its value ‘2’. Thus, ’12’ is printed.
+
+(41) Run set x 1
+		echo $x$z
+	You will see
+
+	1$z
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because variable ‘x’ is set to ‘1’ while variable ‘z’ is not set before. Then variable ‘$x’ is replaced to its value ‘1’ and ‘$z’ is stay the same. Thus, ‘1$z’ is printed.
+
+(42)	Run set x 1\ 2
+		./test_arguments $x
+	You will see
+
+	./test_arguments
+	1 2
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because variable ‘x’ is set to ‘1\ 2’. Then variable ‘$x’ is replaced to its value ‘1\ 2’. The second command changes to be ‘./test_arguments 1\ 2’. Any white space which is escaped with a \ would be literally included in the argument and not treated as a separator. Thus, the argument would be ‘1 2’ in the second command.
+
+(43) Run set a b
+		set b 1
+		echo $$a
+	You will see
+
+	1
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because when my shell run ‘echo $$a’, it is first replaced to ‘echo $b’, and then it is replaced to ‘echo 1’. As variable ‘a’ is set to ‘b’ and variable ‘b’ is set to ‘1’. Thus, ‘1’ is printed.
+
+(44) Run set x x-
+		set $x y
+	You will see
+
+	not valid variable name
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because variable ‘x’ is set to ‘x-’. Then the second command changes to be ‘set x- y’ while ‘x-’ is not a valid variable name.
+
+(45)Run set 1_xY 1
+		echo $1_xY
+	You will see
+
+	1
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $	
+
+	This is correct because variable ‘1_xY’ is set to ‘1’. Then the second command changes to be ‘echo 1’, thus, ‘1’ is printed.
+
+(46) Run set x cd
+		echo $x
+	You will see it prints a prompt
+
+	myShell:/home/rg241 $
+
+	This is correct because variable ‘$x’ is changed to its value ‘cd’. And the command ‘cd’ is operated. The current directory is changed to the home directory.
+
+(47) Run set x echo 1 3 5
+		$x
+	You will see
+
+	1 3 5
+	Program exited with status0
+	myShell:/home/rg241 $
+
+	This is correct because variable ‘$x’ is changed to its value ‘echo 1 3 5’. Then the second  command changes to ‘echo 1 3 5’. Thus, arguments ‘1’, ‘3’ and ‘5’ would be printed.
+
+(48) Run  set x \y
+		echo $x
+	You will see
+
+	y
+	Program exited with status0
+	myShell:/home/rg241 $
+
+	This is correct because variable ‘x’ is changed to its value ‘\y’. Then the second command changes to ‘echo \y’. The single ‘\’ in the argument would be ignored. Thus ,’y’ is printed.
+
+(49) Run echo $w
+	You will see
+
+	$w
+	Program exited with status0
+	myShell:/home/rg241 $
+
+	This is correct because variable ‘w’ has not been set before. The command would stay unchanged. ‘$w’ would be treated as the argument of the command ‘echo’. Thus, ’$w’ would be printed.
+
+(50) Run set x 1
+		set x 2
+		echo $x
+	You will see
+
+	2
+	Program exited with status0
+	myShell:/home/rg241 $
+
+	This is correct because variable ‘x’ is set to ‘1’ first and then is changed to ‘2’. The ‘$x’ would be replaced as ‘2’ in the ‘echo’ command. 
+
+(51) Run set x 1
+		env
+	You will see a list of environment variables without variable x.
+
+	This is correct because the ‘set’ command does not place the variable in the environment for other programs.
+
+(52) Run set x 1
+		export x
+		env
+	You will see a list of environment variables and x=1 is shown in the list. 
+
+	This is correct because the ‘export’ command put the current value of ‘x’ into the environment for other programs. And the current value of ‘x’ is set to ‘1’. 
+
+(53) Run export q
+		env
+	You will see a list of environment variables and q=q is shown in the list.
+
+	This is correct because the ‘export’ command put the current value of ‘q’ into the environment for other programs. The variable ‘q’ has not been set before. So the current value of it is treated  as the same of its name ‘q’ in my shell.
+
+(54) Run export x-
+	You will see
+
+	not valid variable name
+	myShell:/home/rg241 $
+
+	This is correct because ‘x-’ is not a valid variable name.
+
+(55) Run export 
+	You will see
+
+	correct format is: export var
+	myShell:/home/rg241 $
+
+	This is correct because ‘export’ command requires one argument.
+
+(56) Run export a b c
+	You will see
+
+	export : too many arguments
+	myShell:/home/rg241 $
+
+	This is correct because ‘export’ command only accept one argument as the variable name.
+
+(57) Run set x 1
+		export x
+		set x 2
+		env
+	You will see a list of environment variables and x=2 is shown in the list. 
+
+	This is correct because if the variable has been exported, when the value of the variable is set to a new one, the value in the environment would be changed as well.
+
+(58) Run set path 1
+		ls
+	You will see
+
+	Command ls not found
+	myShell:/home/rg241 $
+
+	This is correct because if the user changes PATH, it would affect where my shell searches for the program ls. And the ‘ls’ cannot be found now. 
+
+(59) Run set x 1
+		inc x
+		echo $x
+	You will see
+
+	2
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because variable ‘x’ has value ‘1’,  which canoe interpreted as a number. Then ‘inc’ command would increase this value by one. Thus, ‘$x’ is replaced by its value ‘2’ in the ‘echo’ command.
+
+(60) Run set x hello
+		inc x
+		echo $x
+	You will see
+
+	1
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $ 
+
+	This is correct because variable ‘x’ is set to ‘hello’, which does not represent a number in base 10. In the ‘inc’ command, the value of ‘x’ is treated as ‘0’ and thus increases to ‘1’. Thus, ‘$x’ is replaced by its value ‘1’ in the ‘echo’ command.
+
+(61) Run inc abc
+		echo $abc
+	You will see
+
+	1
+	Program exited with status0
+	myShell:/home/rg241/ece551/mp_miniproject $ 
+
+	This is correct because variable ‘abc’ has not been set before. In the ‘inc’ command, the value of ‘abc’ is treated as ‘0’ and thus increases to ‘1’. Thus, ‘$abc’ is replaced by its value ‘1’ in the ‘echo’ command.
+
+(61) Run inc
+ 	You will see 
+
+	correct format is: inc var
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because ‘inc’ requires one argument as the variable name.
+
+(62) Run inc x y
+	You will see
+
+	inc : too many arguments
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because ‘inc’ only requires one argument.
+
+(63) Run inc x-
+	You will see
+
+	not valid variable name
+	myShell:/home/rg241/ece551/mp_miniproject $
+
+	This is correct because ‘x-‘ is not a valid variable name.
+
+(64) Run exit or Ctrl-D
+	You will see my shell exit.
+
+	This is correct because the command ‘exit’ is sent. Or the EOF is encountered reading from stdin.
+
+That's all. Thank you.
